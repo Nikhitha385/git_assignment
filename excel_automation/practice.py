@@ -1,0 +1,8 @@
+name=input("enter your name:")
+age=int(input("enter the age:"))
+subject=input("enter the subject:")
+marks=int(input("enter the marks:"))
+print("name:",name)
+print("age:",age)
+print("subject:",subject)
+print("marks:",marks)

@@ -1,0 +1,3 @@
+marks=[94,93,98]
+for mark in marks:
+    print(mark)
