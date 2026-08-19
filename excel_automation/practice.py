@@ -1,8 +1,10 @@
-name=input("enter your name:")
-age=int(input("enter the age:"))
-subject=input("enter the subject:")
-marks=int(input("enter the marks:"))
-print("name:",name)
-print("age:",age)
-print("subject:",subject)
-print("marks:",marks)
+from openpyxl import load_workbook
+wb=load_workbook("students.xlsx")
+print(wb.sheetnames)
+sheet=wb["Students"]    # 
+print(sheet.title)  # title of sheet
+sheet=wb.active   # gets the active sheet
+from openpyxl import load_workbook
+wb = load_workbook("students.xlsx")
+sheet = wb.active
+print(sheet.title)
