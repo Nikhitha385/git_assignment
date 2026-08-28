@@ -7,5 +7,4 @@ sheet = wb["Students"]
 sheet.append(["Ravi", 91, 23])
 
 wb.save("students.xlsx")
-
 print("New student added")
