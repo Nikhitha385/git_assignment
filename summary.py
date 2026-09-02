@@ -1,53 +1,69 @@
 from openpyxl import load_workbook
 
+# Open the Excel workbook
 wb = load_workbook("students.xlsx")
 
+# Select Students sheet
 students = wb["Students"]
 
-# Use existing Summary sheet, otherwise create it
-if "Summary" in wb.sheetnames:
-    summary = wb["Summary"]
+# Find the Marks column automatically
+marks_column = None
+
+for cell in students[1]:
+    if cell.value == "Marks":
+        marks_column = cell.column
+        break
+
+# Check if Marks column exists
+if marks_column is None:
+    print("Marks column not found.")
 else:
-    summary = wb.create_sheet("Summary")
+    # Store valid student marks
+    marks_list = []
 
-summary["A1"] = "Student Summary"
+    for row in range(2, students.max_row + 1):
+        name = students.cell(row=row, column=1).value
+        marks = students.cell(row=row, column=marks_column).value
 
-# Total students
-total_students = students.max_row - 1
-summary["A2"] = "Total Students"
-summary["B2"] = total_students
+        if name is not None and isinstance(marks, (int, float)):
+            marks_list.append(marks)
 
-# Total marks
-total_marks = 0
+    if not marks_list:
+        print("No valid student marks found.")
+    else:
 
-for row in range(2, students.max_row + 1):
-    marks = students.cell(row=row, column=2).value
-    total_marks += marks
+        # Get existing Summary sheet or create it
+        if "Summary" in wb.sheetnames:
+            summary = wb["Summary"]
+        else:
+            summary = wb.create_sheet("Summary")
 
-# Average
-average = total_marks / total_students
+        # Title
+        summary["A1"] = "Student Summary"
 
-summary["A3"] = "Average Marks"
-summary["B3"] = average
+        # Total students
+        total_students = len(marks_list)
+        summary["A2"] = "Total Students"
+        summary["B2"] = total_students
 
-# Highest marks
-highest = max(
-    students.cell(row=row, column=2).value
-    for row in range(2, students.max_row + 1)
-)
+        # Average
+        total_marks = sum(marks_list)
+        average = total_marks / total_students
 
-summary["A4"] = "Highest Marks"
-summary["B4"] = highest
+        summary["A3"] = "Average Marks"
+        summary["B3"] = average
 
-# Lowest marks
-lowest = min(
-    students.cell(row=row, column=2).value
-    for row in range(2, students.max_row + 1)
-)
+        # Highest
+        highest = max(marks_list)
+        summary["A4"] = "Highest Marks"
+        summary["B4"] = highest
 
-summary["A5"] = "Lowest Marks"
-summary["B5"] = lowest
+        # Lowest
+        lowest = min(marks_list)
+        summary["A5"] = "Lowest Marks"
+        summary["B5"] = lowest
 
-wb.save("students.xlsx")
+        # Save workbook
+        wb.save("students.xlsx")
 
-print("Summary updated successfully")
+        print("Summary updated successfully")
