@@ -1,0 +1,51 @@
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
+
+# Open the Excel file
+wb = load_workbook("students.xlsx")
+
+# Select Students sheet
+sheet = wb["Students"]
+
+# Find the Marks column
+marks_column = None
+
+for cell in sheet[1]:
+    if cell.value == "Marks":
+        marks_column = cell.column
+        break
+
+# Check whether Marks column was found
+if marks_column is None:
+    print("Marks column not found")
+
+else:
+    # Get the column letter
+    marks_letter = get_column_letter(marks_column)
+
+    # Find the last row
+    last_row = sheet.max_row
+
+    # Add statistics heading
+    sheet["H1"] = "Dynamic Statistics"
+
+    # Total
+    sheet["H2"] = "Total Marks"
+    sheet["I2"] = f"=SUM({marks_letter}2:{marks_letter}{last_row})"
+
+    # Average
+    sheet["H3"] = "Average Marks"
+    sheet["I3"] = f"=AVERAGE({marks_letter}2:{marks_letter}{last_row})"
+
+    # Highest
+    sheet["H4"] = "Highest Marks"
+    sheet["I4"] = f"=MAX({marks_letter}2:{marks_letter}{last_row})"
+
+    # Lowest
+    sheet["H5"] = "Lowest Marks"
+    sheet["I5"] = f"=MIN({marks_letter}2:{marks_letter}{last_row})"
+
+    # Save
+    wb.save("students.xlsx")
+
+    print("Dynamic formulas added successfully")
