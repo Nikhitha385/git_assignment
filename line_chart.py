@@ -1,5 +1,5 @@
 from openpyxl import load_workbook
-from openpyxl.chart import BarChart, Reference
+from openpyxl.chart import LineChart, Reference
 
 # Open the workbook
 wb = load_workbook("students.xlsx")
@@ -7,8 +7,8 @@ wb = load_workbook("students.xlsx")
 # Select Students sheet
 sheet = wb["Students"]
 
-# Create a bar chart
-chart = BarChart()
+# Create a line chart
+chart = LineChart()
 
 # Find the Marks column
 marks_column = None
@@ -38,23 +38,23 @@ else:
         max_row=sheet.max_row
     )
 
-    # Add data
+    # Add data to chart
     chart.add_data(data, titles_from_data=True)
 
     # Add student names
     chart.set_categories(categories)
 
     # Chart title
-    chart.title = "Student Marks"
+    chart.title = "Student Marks - Line Chart"
 
     # Axis titles
     chart.y_axis.title = "Marks"
     chart.x_axis.title = "Students"
 
-    # Add chart
-    sheet.add_chart(chart, "K2")
+    # Place chart in worksheet
+    sheet.add_chart(chart, "K20")
 
     # Save workbook
     wb.save("students.xlsx")
 
-    print("Chart created successfully")
+    print("Line chart created successfully")
