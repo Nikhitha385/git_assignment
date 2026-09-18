@@ -1,0 +1,27 @@
+import pandas as pd
+
+data = {
+    "Name": ["Rahul", "Priya", "Arun", "Sneha"],
+    "Department": ["IT", "HR", "IT", "HR"],
+    "Marks": [95, 90, 82, 88]
+}
+
+df = pd.DataFrame(data)
+
+grouped = df.groupby("Department")["Marks"].mean()
+
+print(grouped)
+# total marks for each department
+import pandas as pd
+
+data = {
+    "Name": ["Rahul", "Priya", "Arun", "Sneha"],
+    "Department": ["IT", "HR", "IT", "HR"],
+    "Marks": [95, 90, 82, 88]
+}
+
+df = pd.DataFrame(data)
+
+grouped = df.groupby("Department")["Marks"].sum()
+
+print(grouped)
